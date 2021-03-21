@@ -264,11 +264,11 @@ class IssueAndMrList:
 		for user_id, username in self.users().items():
 			time_spent = self.sum_user(user_id)
 			try:
-				with open("timesheet-" + username.upper() + ("-official" if extern_version else "")
+				with open("timesheet-" + username + ("-official" if extern_version else "")
 				          + ".csv", "w", newline="", encoding="utf8") as csvfile:
 					wr = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
 
-					wr.writerow(["Date", username.upper(), "Start", "End", ("Pause" if extern_version else "Issues")])
+					wr.writerow(["Date", username, "Start", "End", ("Pause" if extern_version else "Issues")])
 					for date in date_range(args.start, args.end):
 						wr.writerow(self.get_user_row(date, user_id, extern_version))
 
@@ -291,7 +291,7 @@ class IssueAndMrList:
 			with open("total-timesheet.csv", "w", newline="", encoding="utf8") as csvfile:
 				wr = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
 
-				wr.writerow(["Date"] + [username.upper() for username in self.users().values()])
+				wr.writerow(["Date"] + [username for username in self.users().values()])
 				for date in date_range(args.start, args.end):
 					wr.writerow([date] + [str(self.sum_date_user(date, user_id)) for user_id in self.users()])
 
@@ -453,7 +453,7 @@ def parse_args() -> argparse.Namespace:
 	arg_parser.add_argument("--users", default=None, type=str,
 	                        help="create timesheets only for specific usernames splitted by /")
 	arg_parser.add_argument("--max_hours", default=None, type=str,
-	                        help="given max hours per week, the maximal possible hours per month are calculated."
+	                        help="given max hours per week, the maximal possible hours per month are calculated. "
 	                             "Can be used in combination with users by splitting with /")
 	arg_parser.add_argument("--users_blacklist", action="store_true",
 	                        help="users parameter is a blacklist")
