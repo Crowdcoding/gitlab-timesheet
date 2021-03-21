@@ -1,0 +1,25 @@
+% !TeX spellcheck = en_US
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8 Unicode
+
+% This Source Code Form is subject to the terms of the Mozilla Public
+% License, v. 2.0. If a copy of the MPL was not distributed with this
+% file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+\documentclass[a4paper]{scrartcl}
+
+\usepackage{longtable}
+\usepackage{csvsimple}
+
+% For compiling without `-jobname timesheet-USERNAME` uncomment and adjust this line:
+%\def\jobname{timesheet-USERNAME}
+
+
+\begin{document}
+
+\csvreader[head=false, no head, tabbing, longtable=|r|l|r|r|p{7.5cm}|,
+           table head = \hline, table foot = \hline, late after line=\\\hline]%
+    {\jobname.csv}{}%
+    {\csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv}%
+
+\end{document}

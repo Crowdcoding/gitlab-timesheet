@@ -42,3 +42,17 @@ The script creates a CSV file per user in the current folder with the following 
 | ---------- | -------- | ----- | ----- | --------------------------------------------------- |
 | 2021-01-01 | 8h00m    | 10:00 | 18:00 | Project#1 Story Title: 480 min                      |
 | 2021-01-02 | 4h00m    | 10:00 | 14:00 | Project#2 Title2: 180 min; Project#3 Title3: 60 min |
+
+
+LaTeX PDF Timesheet
+-------------------
+
+It is possible to quickly generate a PDF file showing the timesheet in a printable table.
+To do this, re-run `timesheet.py` with the `--tex` option.
+This will escape chars like `#` that would break LaTeX.
+
+Use the LaTeX template to compile a timesheet:
+
+    xelatex -jobname timesheet-USERNAME --halt-on-error timesheet.tex
+
+And replace USERNAME with your GitLab username.
