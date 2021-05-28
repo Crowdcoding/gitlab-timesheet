@@ -370,7 +370,7 @@ def process_issue_mr(issue_mr: IssueOrMergeRequest,
 	notes = p_issue_mr.notes.list(all=True)
 	for note in notes:
 		if note.system and "time spent" in note.body:
-			created_at = datetime.datetime.fromisoformat(note.created_at[:-8])
+			created_at = datetime.datetime.fromisoformat(note.created_at.split('.', 1)[0])
 
 			# Issues are orderd by recency. A time spent can not be made for the future.
 			if created_at.date() < args.start:
@@ -659,8 +659,10 @@ if __name__ == '__main__':
 		mr_futures = [executor.submit(process_issue_mr, mr, gl, issues_mrs)
 		              for mr in mrs if datetime.date.fromisoformat(mr.created_at[:10]) < args.end]
 
-		concurrent.futures.wait(issue_futures + mr_futures)
-
+		all_futures = issue_futures + mr_futures
+		concurrent.futures.wait(all_futures)
+		for future in all_futures:
+			future.result()  # So that exceptions are properly raised.
 
 	logging.info(f"HTTP requests finished after {time.time() - start_time_http_request} seconds\n")
 	start_time_printing = time.time()
